@@ -1,0 +1,26 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>Autor: {{ author.first_name }}{{author.last_name }}</h1>
+
+  <p><strong>Nacimiento:</strong> {{ author.date_of_birth }}</p>
+  <p><strong>Muerte:</strong> {{ author.death }}</p> 
+
+
+<br>
+  <h2>Obras disponibles</h2>
+<br>
+  {% for copy in author.book_set.all %}
+  <hr>
+ <div class="conteiner">
+ 
+  <p><strong>Título:</strong>  <a href="{% url 'book-detail' copy.pk %}">{{ copy.title }} </a></p>
+  <p><strong>Sinopsis:</strong> {{copy.summary}}</p>
+
+
+ </div>
+  {% endfor %}
+</div>
+
+ 
+{% endblock %}

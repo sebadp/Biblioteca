@@ -1,0 +1,29 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+<h1>Inicio</h1>
+{% block title %}<title>Inicio</title>{% endblock %}
+
+  <p>Bienvenido a la <em>Biblioteca Local</em>.</p>
+<div>
+
+  <div>
+    <h2>Contenido dinámico</h2>
+
+    <p>La Biblioteca tiene los siguientes registros:</p>
+    <ul>
+      <li><strong>Libros:</strong> {{ num_books }}</li>
+      <li><strong>Copias:</strong> {{ num_instances }}</li>
+      <li><strong>Copias disponibles:</strong> {{ num_instances_available }}</li>
+      <li><strong>Autores:</strong> {{ num_authors }}</li>
+      <li><strong>Género Narrativo> Novelas :</strong> {{ num_books_novela }}</li>
+      <li><strong>Género Narrativo> Maravilloso :</strong> {{ num_books_maravilloso }}</li>
+      <li><strong>Género Narrativo> Ciencia Ficción :</strong> {{ num_books_ficcion }}</li>
+    </ul>
+  </div>{% if num_visits == 0 %} Bienvenido! Esta es tu primera visita. {% elif num_visits == 1 %}
+  <p>Haz visitado esta página 1 vez.</p>{% else %}
+    <p>Haz visitado esta página {{ num_visits }} veces{% endif %}</p>
+</div>
+
+
+{% endblock %}

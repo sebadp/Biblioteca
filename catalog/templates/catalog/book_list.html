@@ -1,0 +1,40 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+    <h1>Lista de todos los Libros</h1>
+    {% if perms.catalog.can_see_buttons %}- <a href="{% url 'book_create' %}">Crear Libro</a>{% endif %}
+
+    {% if book_list %}
+
+    <table class="table table-striped">
+      <thead>
+      <tr>
+          <th scope="col">Libro</th>
+          <th scope="col">Autor</th>
+          <th scope="col">Género</th>
+          <th scope="col">Idioma</th>
+          <th scope="col">Modificar</th>
+
+      </tr>
+      </thead>
+      <tbody>
+
+      {% for book in book_list %}
+      <tr>
+        <th scope="row">{{ book.title }}</a></th>
+        <td>{{book.author}}</td>
+        <td>{{book.genre}}</td>
+        <td>{{book.language}}</td>
+        <td>{% if perms.catalog.can_mark_returned %}- <a href="{% url 'book_update' book.id %}">Editar</a>  {% endif %}</td>
+
+      </tr>
+
+      </li>
+      <br>
+      {% endfor %}
+
+    </ul>
+    {% else %}
+      <p>Todavía no hay Libros en la Biblioteca.</p>
+    {% endif %}       
+{% endblock %}

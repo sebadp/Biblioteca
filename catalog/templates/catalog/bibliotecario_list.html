@@ -1,0 +1,36 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+    <h1>Lista para el Bibliotecario</h1>
+
+    {% if bookinstance_list %}
+    <table class="table table-striped">
+      <thead>
+      <tr>
+          <th scope="col">Libro</th>
+          <th scope="col">Autor</th>
+          <th scope="col">Lector</th>
+          <th scope="col">F. Devolución</th>
+          <th scope="col">Cambio</th>
+
+      </tr>
+      </thead>
+      <tbody>
+
+      {% for bookinst in bookinstance_list %}
+      <tr>
+        <th scope="row"><a href="{{ bookinst.book.get_absolute_url }}">{{ bookinst.book.title }}</a></th>
+        <td>{{bookinst.book.author}}</td>
+        <td>{{bookinst.borrower}}</td>
+        <td><li class="{% if bookinst.is_overdue %}text-danger{% endif %}">{{ bookinst.due_back }}</li></td>
+        <td>{% if perms.catalog.can_mark_returned %}- <a href="{% url 'renew-book-librarian' bookinst.id %}">Renew</a>  {% endif %}</td>
+
+      </tr>
+      
+      {% endfor %}
+
+    
+    {% else %}
+      <p>Todavía no hay Libros en la Biblioteca.</p>
+    {% endif %}       
+{% endblock %}

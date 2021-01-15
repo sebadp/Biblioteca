@@ -1,0 +1,35 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+    <h1>Lista de todos los Autores</h1>
+    {% if perms.catalog.can_see_buttons %}- <a href="{% url 'author_create' %}">Crear Autor</a>{% endif %}
+
+    {% if author_list %}
+    <table class="table table-striped">
+      <thead>
+      <tr>
+          <th scope="col">Nombre</th>
+          <th scope="col">Apellido</th>
+          <th scope="col">F. Nacimiento</th>
+          <th scope="col">F. Defunción</th>
+          {% if perms.catalog.can_see_buttons %}-<th scope="col">Editar</th>{% endif %}
+
+      </tr>
+      </thead>
+      <tbody>
+
+      {% for author in author_list %}
+      <tr>
+        <th scope="row">{{ author.first_name }}</th>
+        <td>{{author.last_name}}</td>
+        <td>{{author.last_name}}</td>
+        <td>{{author.last_name}}</td>
+        {% if perms.catalog.can_see_buttons %}-<td> <a href="{% url 'author_update' author.id %}">Editar</a> </td> {% endif %}
+
+      </tr>
+      {% endfor %}
+
+    {% else %}
+      <p>Todavía no hay Autores registrados.</p>
+    {% endif %}       
+{% endblock %}
