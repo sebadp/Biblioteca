@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, HttpResponse
 from .models import Book, Author, BookInstance, Genre
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
@@ -11,6 +11,16 @@ from django.urls import reverse, reverse_lazy
 from catalog.forms import RenewBookForm
 
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.urls import reverse_lazy
+from .models import Author
+
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.urls import reverse_lazy
+from .models import Author
+
+import requests
+
 # Create your views here.
 def index(request):
     """
@@ -30,7 +40,6 @@ def index(request):
     request.session['num_visits'] = num_visits + 1
 
 
-
     # Renderiza la plantilla HTML index.html con los datos en la variable contexto
     return render(
         request,
@@ -44,6 +53,7 @@ def index(request):
             'num_books_maravilloso':num_books_maravilloso,
             'num_books_ficcion':num_books_ficcion,
             'num_visits': num_visits,
+            
             },
     )
 
@@ -112,9 +122,7 @@ def renew_book_librarian(request, pk):
 
     return render(request, 'catalog/book_renew_librarian.html', context)
 
-    from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from django.urls import reverse_lazy
-from .models import Author
+
 
 class AuthorCreate(CreateView):
     model = Author
@@ -128,9 +136,6 @@ class AuthorDelete(DeleteView):
     model = Author
     success_url = reverse_lazy('authors')
 
-    from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from django.urls import reverse_lazy
-from .models import Author
 
 class BookCreate(CreateView):
     model = Book
@@ -143,3 +148,9 @@ class BookUpdate(UpdateView):
 class BookDelete(DeleteView):
     model = Book
     success_url = reverse_lazy('books')
+
+def Buscador(request):
+    busqueda = request.GET.get('busqueda')
+    book_list = Book.objects.filter(title__startswith=busqueda)
+    return HttpResponse(book_list)
+    

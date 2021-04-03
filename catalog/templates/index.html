@@ -8,6 +8,14 @@
 <div>
 
   <div>
+    <h2>Buscador de libros:</h2>
+    <form action="{% url 'search' %}" method="get">
+      <input type="text" name="busqueda">
+      <button type="submit">Buscar</button>
+    </form>
+  </div>
+
+  <div>
     <h2>Contenido dinámico</h2>
 
     <p>La Biblioteca tiene los siguientes registros:</p>
