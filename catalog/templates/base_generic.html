@@ -5,33 +5,57 @@
 <html lang="es">
 
 	<head>
-    <!-- {% block title %}<title>Biblioteca Local</title>{% endblock %} -->
+    {% block title %}<title>Biblioteca Local</title>{% endblock %}
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="{% static 'assets/css/main.css' %}" />
 		<noscript><link rel="stylesheet" href="{% static 'assets/css/noscript.css' %}" /></noscript>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">  -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>	 -->
     
     <!-- Add additional CSS in static file -->
   
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet"> 
-  <link rel="stylesheet" href="{% static 'css/normalize.css' %}"></head>
+  <!-- <link rel="stylesheet" href="{% static 'css/normalize.css' %}"> -->
+</head>
   	<body class="is-preload">
 
 		<!-- Sidebar -->
 			<section id="sidebar">
 				<div class="inner">
 					<nav>
+						<div>
+
 						<ul>
-							<li><a href="#intro">Welcome</a></li>
-							<li><a href="#one">Who we are</a></li>
-							<li><a href="#two">What we do</a></li>
-							<li><a href="#three">Get in touch</a></li>
-						</ul>
+							<li><a href="{% url 'index' %}">Inicio</a></li>
+							<li><a href="{% url 'books' %}">Todos los Libros</a></li>
+							<li><a href="{% url 'authors' %}">Todos los Autores</a></li>
+						{% block sidebar %}
+						{% if user.is_authenticated %}        
+							   
+								<p>Hola {{ user.username }}</p> 
+								  
+								  {% if perms.catalog.can_mark_returned %}
+								  <li><a href="{% url 'bibliotecario' %}">Libros prestados</a></li>
+								  {% endif %}
+									
+								  <li><a href="{% url 'my-borrowed' %}">Mis libros prestados</a></li>
+								  <li><a href="{% url 'logout' %}">Cerrar Sesion</a></li>
+								</ul>
+							  </div>
+							  {% else %}
+						
+								  <li><a href="{% url 'login' %}">Iniciar Sesion</a></li>
+								</ul>
+							  </div>
+						
+							  {% endif %}
+
+							  {% endblock %}
+
 					</nav>
 				</div>
 			</section>
@@ -42,13 +66,27 @@
 				<!-- Intro -->
 					<section id="intro" class="wrapper style1 fullscreen fade-up">
 						<div class="inner">
-							<h1>Hyperspace</h1>
-							<p>Just another fine responsive site template designed by <a href="http://html5up.net">HTML5 UP</a><br />
-							and released for free under the <a href="http://html5up.net/license">Creative Commons</a>.</p>
-							<ul class="actions">
-								<li><a href="#one" class="button scrolly">Learn more</a></li>
-							</ul>
+							{% block content %}{% endblock %}
+					  
+							{% block pagination %}
+							  {% if is_paginated %}
+								  <div class="pagination">
+									  <span class="page-links">
+										  {% if page_obj.has_previous %}
+											  <a href="{{ request.path }}?page={{ page_obj.previous_page_number }}">Anterior</a>
+										  {% endif %}
+										  <span class="page-current">
+											  Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.
+										  </span>
+										  {% if page_obj.has_next %}
+											  <a href="{{ request.path }}?page={{ page_obj.next_page_number }}">Siguiente</a>
+										  {% endif %}
+									  </span>
+								  </div>
+							  {% endif %}
+							{% endblock %} 
 						</div>
+
 					</section>
 
 				<!-- One -->
@@ -205,97 +243,13 @@
 			</footer>
 
 		<!-- Scripts -->
-			<script src="assets/js/jquery.min.js"></script>
-			<script src="assets/js/jquery.scrollex.min.js"></script>
-			<script src="assets/js/jquery.scrolly.min.js"></script>
-			<script src="assets/js/browser.min.js"></script>
-			<script src="assets/js/breakpoints.min.js"></script>
-			<script src="assets/js/util.js"></script>
-			<script src="assets/js/main.js"></script>
+			<script src="{% static 'assets/js/jquery.min.js' %}"></script>
+			<script src="{% static 'assets/js/jquery.scrollex.min.js' %}"></script>
+			<script src="{% static 'assets/js/jquery.scrolly.min.js' %}"></script>
+			<script src="{% static 'assets/js/browser.min.js' %}"></script>
+			<script src="{% static 'assets/js/breakpoints.min.js' %}"></script>
+			<script src="{% static 'assets/js/util.js' %}"></script>
+			<script src="{% static 'assets/js/main.js' %}"></script>
 
-	<!-- </body>
-</html>
-
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  
-  {% block title %}<title>Biblioteca Local</title>{% endblock %}
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  
-
-  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-  <link rel="preconnect" href="https://fonts.gstatic.com">
-<link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet"> 
-<link rel="stylesheet" href="normalize.css"></head>
-
-<body> -->
-
-  <div class="container-fluid">
-
-    <div class="row">
-      <div class="col-sm-2">
-      {% block sidebar %}
-      <ul class="sidebar-nav">
-          <li><a href="{% url 'index' %}">Inicio</a></li>
-          <li><a href="{% url 'books' %}">Todos los Libros</a></li>
-          <li><a href="{% url 'authors' %}">Todos los Autores</a></li>
-
-      </ul>
-      
-      {% if user.is_authenticated %}        
-       
-      <div>
-        <p>Hola {{ user.username }}</p> 
-        <ul>
-          
-          {% if perms.catalog.can_mark_returned %}
-          <li><a href="{% url 'bibliotecario' %}">Libros prestados</a></li>
-          {% endif %}
-            
-          <li><a href="{% url 'my-borrowed' %}">Mis libros prestados</a></li>
-          <li><a href="{% url 'logout' %}">Cerrar Sesion</a></li>
-        </ul>
-      </div>
-      {% else %}
-      <div> 
-        <ul>
-
-          <li><a href="{% url 'login' %}">Iniciar Sesion</a></li>
-        </ul>
-      </div>
-
-      {% endif %}
-
-      {% endblock %}
-      </div>
-      <div class="col-sm-10 ">
-        {% block content %}{% endblock %}
-  
-        {% block pagination %}
-          {% if is_paginated %}
-              <div class="pagination">
-                  <span class="page-links">
-                      {% if page_obj.has_previous %}
-                          <a href="{{ request.path }}?page={{ page_obj.previous_page_number }}">Anterior</a>
-                      {% endif %}
-                      <span class="page-current">
-                          Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.
-                      </span>
-                      {% if page_obj.has_next %}
-                          <a href="{{ request.path }}?page={{ page_obj.next_page_number }}">Siguiente</a>
-                      {% endif %}
-                  </span>
-              </div>
-          {% endif %}
-        {% endblock %} 
-      </div>
-    </div>
-
-  </div>
-</body>
+	</body>
 </html>
