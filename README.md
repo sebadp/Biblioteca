@@ -1,4 +1,5 @@
-# Biblioteca
+# Library/Biblioteca
+Web App to manage a library, created in Django with Python.
 Web App para gestionar una biblioteca, creado en Django con Python.
  - Gestiona la base de datos de una biblioteca. 
  - Administra los préstamos y recuerda las fechas de vencimiento de los mismos.
